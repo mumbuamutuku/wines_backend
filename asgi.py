@@ -8,4 +8,4 @@ from fastapi.middleware.wsgi import WSGIMiddleware
 wsgi_app = WSGIMiddleware(app)
 
 # Gunicorn looks for a variable named "application"
-application = wsgi_app
+application = app
