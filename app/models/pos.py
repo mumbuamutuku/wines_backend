@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, Float, DateTime, ForeignKey, create_engine
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
+from app.core.config import settings
 from app.core.database import Base
 
 class Sale(Base):
@@ -28,3 +29,6 @@ class SaleItem(Base):
     # Relationships
     sale = relationship("Sale", back_populates="items")
     inventory_item = relationship("InventoryItem", back_populates="sale_items")
+
+    engine = create_engine(settings.DATABASE_URL)
+    Base.metadata.create_all(bind=engine)

@@ -1,6 +1,7 @@
-from sqlalchemy import Boolean, Column, Integer, String, Enum
+from sqlalchemy import Boolean, Column, Integer, String, Enum, create_engine
 from sqlalchemy.orm import relationship
 
+from app.core.config import settings
 from app.core.database import Base
 
 class User(Base):
@@ -16,3 +17,6 @@ class User(Base):
     # Relationships
     inventory_items = relationship("InventoryItem", back_populates="created_by")
     sales = relationship("Sale", back_populates="cashier")
+
+    engine = create_engine(settings.DATABASE_URL)
+    Base.metadata.create_all(bind=engine)
