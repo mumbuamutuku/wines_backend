@@ -11,3 +11,12 @@ app/crud/__pycache__
 app/static/__pycache__
 app/models/__pycache__
 app/schemas/__pycache__
+dist
+build
+back.spec
+backend.spec
+main.spec
+runmig.py
+test_simple.py
+test_simple.spec
+.vscode

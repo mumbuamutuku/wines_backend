@@ -4,12 +4,22 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.v1 import auth, user, inventory, pos
 
+import sys
+import os
+
+print("Starting application...")
+print("Python executable:", sys.executable)
+print("Current directory:", os.getcwd())
+print("Environment variables:")
+for key in ['DATABASE_URL', 'SECRET_KEY', 'ALGORITHM']:
+    print(f"  {key}: {os.getenv(key)}")
+
 app = FastAPI(title="Inventory and POS System")
 
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://pos.printcopysolution.co.ke/"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -24,3 +34,9 @@ app.include_router(pos.router, prefix="/api/v1/pos", tags=["pos"])
 @app.get("/")
 def read_root():
     return {"message": "Inventory and POS System"}
+
+if __name__ == "__main__":
+    import uvicorn
+    print("Starting Uvicorn server on http://0.0.0.0:8000")
+    print("Press Ctrl+C to stop the server")
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
