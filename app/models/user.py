@@ -17,6 +17,5 @@ class User(Base):
     # Relationships
     inventory_items = relationship("InventoryItem", back_populates="created_by")
     sales = relationship("Sale", back_populates="cashier")
-
-    engine = create_engine(settings.DATABASE_URL)
-    Base.metadata.create_all(bind=engine)
+    expense_items = relationship("ExpenseItem", back_populates="created_by")
+    category_items = relationship("CategoryItem", back_populates="created_by")
