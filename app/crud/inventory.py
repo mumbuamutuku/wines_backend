@@ -16,12 +16,18 @@ def create_inventory_item(db: Session, item: InventoryItemCreate, user_id: int):
     db.refresh(db_item)
     return db_item
 
-def update_inventory_item(db: Session, item_id: int, item: InventoryItemUpdate):
+def update_inventory_item(db: Session, item_id: int, item: InventoryItemUpdate, updated_by_id: int):
     db_item = get_inventory_item(db, item_id)
     if not db_item:
         return None
-    for key, value in item.dict().items():
+    
+     # Only update fields that are provided
+    update_data = item.dict(exclude_unset=True)
+    for key, value in update_data.items():
         setattr(db_item, key, value)
+    
+    # Set updated_by_id and trigger updated_at
+    db_item.updated_by_id = updated_by_id
     db.commit()
     db.refresh(db_item)
     return db_item

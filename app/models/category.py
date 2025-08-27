@@ -18,5 +18,5 @@ class CategoryItem(Base):
     inventory_items = relationship(
         "InventoryItem",
         back_populates="category_item",  # Point to the relationship on InventoryItem
-        foreign_keys="[InventoryItem.category]"
+        foreign_keys="[InventoryItem.category_id]"
     )

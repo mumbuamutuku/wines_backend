@@ -39,12 +39,15 @@ def update_item(
     item_id: int,
     item: InventoryItemUpdate,
     db: Session = Depends(get_db),
-    current_user=Depends(role_required(UserRole.inventory_staff))
+    current_user=Depends(get_current_active_user)
 ):
+    if current_user.role not in [UserRole.inventory_staff, UserRole.admin]:
+       raise HTTPException(status_code=403, detail="Not enough permissions")
     db_item = get_inventory_item(db, item_id=item_id)
+    print(db_item)
     if db_item is None:
         raise HTTPException(status_code=404, detail="Item not found")
-    return update_inventory_item(db, item_id=item_id, item=item)
+    return update_inventory_item(db, item_id=item_id, item=item, updated_by_id=current_user.id)
 
 @router.delete("/{item_id}")
 def delete_item(
